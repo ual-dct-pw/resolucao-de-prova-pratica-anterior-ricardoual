@@ -64,125 +64,130 @@ div {
   padding: 20px;
 }
 </style>
-<script>
+<script> 
 	function validateForm() {
 	// colocar aqui todas as validações
 	// devolve false se falhar alguma regra, true caso contrário
 	// utilizar a variável formFeedback para indicar os erros
 		console.log("sadfsad");
-		var cc=document.getElementById("cc").value;
-		if (isNaN(cc) || cc.length < 8 || cc.length > 8) {
+        var username = document.getElementById("username").value;
+		var mobile =document.getElementById("mobile").value;
+	
+		
+
+		if (username<4 || username > 10 ) {
 			document.getElementById("formFeedback").style.color = "red";
-			document.getElementById("formFeedback").innerHTML = "Erro: número de CC inválido!";
+			document.getElementById("formFeedback").innerHTML = "Erro: username invalido!";
 			//Vamos ajudar o utilizador indicando qual o campo errado
-			document.getElementById("cc").focus();
-			
+			document.getElementById("username").focus();
 			return false;
 		}
+		else if (isNaN(cc) || mobile.length < 9 || cc.mobile > 9) {
+			document.getElementById("formFeedback").style.color = "red";
+			document.getElementById("for-mFeedback").innerHTML = "Erro: número invalido";
+			//Vamos ajudar o utilizador indicando qual o campo errado
+			document.getElementById("mobile").focus();
+			return false;
+		}
+		
 		else {
 			
 			// colocar aqui o alert com todos os dados inseridos e validados
 			document.getElementById("formFeedback").style.color = "green";
 			document.getElementById("formFeedback").innerHTML = "Ok!";
+			return true;
 		}
-		return false;
-		//return true;
 		
-		
+	
 		
 	}
 	
 	function callSecurityAPI() {
-		// Em primeiro lugar, vamos obter o IP da nossa máquina
-		var xhttp = new XMLHttpRequest();
-		var ipClient ="";
-		xhttp.onreadystatechange = function() {
+		var xhttp1= new XMLHttpRequest();
+		xhttp1.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-             //alert(this.responseText);
-			 //var myArr = JSON.parse(this.responseText);
-			 //document.getElementById("securityinfo").innerHTML = "Segurança: " + this.responseText;
-			 ipClient=this.responseText;
+				 var myArr = JSON.parse(this.responseText);
+                
+			  document.getElementById("password").innerHTML = myArr.pws;
+			  alert(this.responseText);
 			}
 		};
-		xhttp.open("GET", "https://api.ipify.org", true);
-		xhttp.send();
-		
-		// Vamos de seguida obter informações sobre o nosso IP chamando outra API
-		var xhttp2 = new XMLHttpRequest();
-		xhttp2.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-             //alert(this.responseText);
-			 //var myArr = JSON.parse(this.responseText);
-			 document.getElementById("securityinfo").innerHTML = "Dados deste computador: " + this.responseText;
-			}
-		};
-		var urlToCall ="https://ipapi.co/" + ipClient + "/json/";
-		xhttp2.open("GET", urlToCall, true);
-		xhttp2.send();
+		xhttp1.open("GET","https://makemeapassword.ligos.net/api/v1/alphanumeric/json?c=1&l=8", true);
+		xhttp1.send();
 	}
+	
 
 	function callThinkingAPI() {
-		//document.getElementById("pensamento").innerHTML = "Thinking!";
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-             
-			 var myArr = JSON.parse(this.responseText);
+              var myArr = JSON.parse(this.responseText);
 			 // Estamos a ir buscar o campo activity do objecto JSON
-			 document.getElementById("pensamento").innerHTML = "Pensamento do dia: " + myArr.activity;
+			 document.getElementById("pensamento").innerHTML = "Piada do dia: " + myArr.value.joke;
+			 alert(this.responseText);
 			}
 		};
-		xhttp.open("GET", "https://www.boredapi.com/api/activity?type=recreational", true);
+		xhttp.open("GET","http://api.icndb.com/jokes/random", true);
 		xhttp.send();
 	}
+	function clean() {
+		 document.getElementById("name").innerHTML = null;
+		 document.getElementById("bday").innerHTML = null;
+		 document.getElementById("password").innerHTML = null;
+		 document.getElementById("nomeC").innerHTML = null;
+		 document.getElementById("justificaçao").innerHTML = null;
+		 document.getElementById("email").innerHTML = null;
+		 document.getElementById("mobile").innerHTML = null;
+
+}
 	
 </script>
 <body onload="callSecurityAPI()">
-
-<h3>Uso de CSS para formatar estilos num Form HTML</h3>
-
 <div>
   <form action="/action_page.php" onsubmit="return validateForm()" method="post">
-    <label for="name">Nome</label>
-    <input type="text" id="name" name="username" placeholder="Seu nome..." required oninvalid="this.setCustomValidity('Preencha o campo...')" ><br>
+    <label for="name">Username</label>
+    <input type="text" id="name" name="username" placeholder="Seu username..." required oninvalid="this.setCustomValidity('Preencha o campo...')" oninput="setCustomValidity('')"><br>
 
     <label for="bday">Data de Nascimento</label>
-    <input type="date" id="bday" name="userbday" required oninvalid="this.setCustomValidity('Preencha o campo...')" /><br><br>
+    <input type="date" id="bday" name="userbday" required oninvalid="this.setCustomValidity('Preencha o campo...')" oninput="setCustomValidity('')"/><br><br>
 
-    <label for="nif">NIF</label>
-    <input type="text" id="nif" name="usernif" placeholder="Seu NIF..." required oninvalid="this.setCustomValidity('Preencha o campo...')" ><br>
+    <label for="password">Password</label>
+    <input type="text" id="password" name="password" placeholder="Seu password..."><br>
 	
-	<label for="cc">CC</label>
-    <input type="text" id="cc" name="usercc" placeholder="Seu CC..."><br>
+	<label for="nomeC">Nome Completo</label>
+    <input type="text" id="nomeC" name="nomeC" placeholder="Seu nome..." required oninvalid="this.setCustomValidity('Preencha o campo...')" oninput="setCustomValidity('')"><br>
 	
-	<label for="address">Morada</label>
-    <input type="text" id="address" name="useraddress" placeholder="Sua morada..."><br>
+	<label for="sex">sexo</label>
+    <select type="d" id="sex" name="sex" placeholder="Sua sexo..." required oninvalid="this.setCustomValidity('Preencha o campo...')" oninput="setCustomValidity('')">
+     <option hidden disabled selected value> -- select an option -- </option>
+     <option value="Femenino">Femenino</option>
+     <option value="Masculino">Masculino</option>
+       </select>
+	<br>
+	<label for="emprego">Area de emprego</label>
+    <select type="text" id="emprego" name="emprego" placeholder="Area de emprego.." required oninvalid="this.setCustomValidity('Preencha o campo...')" oninput="setCustomValidity('')">
+     <option hidden disabled selected value> -- select an option -- </option>
+     <option value="Admistrativo">Admistrativo</option>
+     <option value="Comercial">Comercial</option>
+     <option value="Desporto">Desporto</option>
+     <option value="Tecnico">Tecnico</option>
+     <option value="Outro">Outro</option>
+    </select>
+	<br>
 	
-	<label for="cp">C&oacute;digo Postal</label>
-    <input type="text" id="cp" name="usercp" placeholder="Seu c&oacute;digo postal..."><br>
-	
-	<label for="city">Cidade</label>
-    <input type="text" id="city" name="usercity" placeholder="Sua cidade..."><br>
-	
-	<label for="latitude">Latitute</label>
-    <input type="text" id="latitude" name="userlatitude"><br>
-	
-	<label for="latitude">Longitude</label>
-    <input type="text" id="longitude" name="userlongitude"><br>
+	<label for="justificaçao">justificaçao</label>
+    <input type="text" id="justificaçao" name="justificaçao" placeholder="justificaçao"><br>
 	
 	<label for="email">Email</label>
-    <input type="email" id="email" name="useremail" placeholder="Seu email..." required  oninvalid="this.setCustomValidity('Preencha o campo...')" ><br>
+    <input type="email" id="email" name="useremail" placeholder="Seu email..." required  oninvalid="this.setCustomValidity('Preencha o campo...')" oninput="setCustomValidity('')"><br>
 	
 	<label for="mobile">Telemóvel</label>
     <input type="text" id="mobile" name="usermobile" placeholder="Seu telemóvel..."><br>
   
-    <input type="submit" value="Submit"><input type="reset" value="Clear"><input type="button" value="Pensamento do dia" onclick="callThinkingAPI()"> 
+    <input type="submit" value="Submit"><input type="reset" value="Clear" onclick="clean()"><input type="button" value="Pensamento do dia" onclick="callThinkingAPI()"> 
 	<p id="formFeedback"></p>
 	<label id="pensamento"></label>
   </form>
-  <br /><B>Informações de segurança</B>
-  <p id=securityinfo></p>
 </div>
-
 </body>
 </html>
