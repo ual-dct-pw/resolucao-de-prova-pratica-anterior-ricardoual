@@ -108,7 +108,7 @@ div {
 			if (this.readyState == 4 && this.status == 200) {
 				 var myArr = JSON.parse(this.responseText);
                 
-			  document.getElementById("password").innerHTML = myArr.pws;
+			  document.getElementById("password").value = myArr.pws;
 			  alert(this.responseText);
 			}
 		};
